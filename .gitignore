@@ -2,11 +2,10 @@ node_modules
 dist
 .env
 .env.test
+.env.prod
 uploads/*
 !.gitkeep
 prisma/.env
 coverage
 npm-debug.log
 yarn-error.log
-.env.prod.example
-.env.example
