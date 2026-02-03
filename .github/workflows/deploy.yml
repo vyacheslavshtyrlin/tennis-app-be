@@ -1,0 +1,32 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      run_migrations:
+        description: 'Run prisma migrate deploy'
+        required: true
+        default: 'true'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_SSH_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            set -euo pipefail
+            cd /home/deploy/tennis-app-be
+            git pull
+            docker compose -f docker-compose.prod.yml --env-file .env.prod build
+            if [ "${{ github.event.inputs.run_migrations || 'true' }}" = "true" ]; then
+              docker compose -f docker-compose.prod.yml --env-file .env.prod run --rm migrate
+            fi
+            docker compose -f docker-compose.prod.yml --env-file .env.prod up -d
