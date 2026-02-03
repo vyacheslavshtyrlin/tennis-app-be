@@ -1,0 +1,12 @@
+node_modules
+dist
+.env
+.env.test
+uploads/*
+!.gitkeep
+prisma/.env
+coverage
+npm-debug.log
+yarn-error.log
+.env.prod.example
+.env.example

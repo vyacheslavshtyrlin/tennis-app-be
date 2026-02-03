@@ -1,0 +1,162 @@
+{
+  "folders": [
+    {
+      "name": "tennis-tracker-backend",
+      "path": ".",
+    },
+  ],
+  "settings": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit",
+      "source.organizeImports": "explicit",
+    },
+
+    "prettier.singleQuote": true,
+    "prettier.trailingComma": "all",
+    "prettier.printWidth": 100,
+    "prettier.semi": true,
+
+    "eslint.validate": ["typescript", "javascript"],
+    "eslint.format.enable": true,
+    "eslint.alwaysShowStatus": true,
+
+    "typescript.preferences.importModuleSpecifier": "relative",
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "typescript.suggest.completeFunctionCalls": true,
+    "typescript.tsserver.maxTsServerMemory": 4096,
+
+    "files.eol": "\n",
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true,
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/.next": true,
+      "**/coverage": true,
+    },
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/coverage": true,
+    },
+
+    "files.associations": {
+      "*.env": "dotenv",
+      ".env.*": "dotenv",
+      "*.prisma": "prisma",
+      "docker-compose*.yml": "yaml",
+    },
+
+    "terminal.integrated.defaultProfile.windows": "Git Bash",
+    "terminal.integrated.scrollback": 10000,
+
+    "docker.showStartPage": false,
+    "prisma.enableCodeLens": true,
+    "prisma.showPrismaDataPlatformNotification": false,
+  },
+
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "deps: install",
+        "type": "shell",
+        "command": "npm ci",
+        "problemMatcher": [],
+      },
+      {
+        "label": "build",
+        "type": "shell",
+        "command": "npm run build",
+        "problemMatcher": [],
+      },
+      {
+        "label": "dev",
+        "type": "shell",
+        "command": "npm run start:dev",
+        "isBackground": true,
+        "problemMatcher": [],
+      },
+      {
+        "label": "start (prod local)",
+        "type": "shell",
+        "command": "npm run start:prod",
+        "problemMatcher": [],
+      },
+      {
+        "label": "lint",
+        "type": "shell",
+        "command": "npm run lint",
+        "problemMatcher": [],
+      },
+      {
+        "label": "format",
+        "type": "shell",
+        "command": "npm run format",
+        "problemMatcher": [],
+      },
+
+      {
+        "label": "docker: up",
+        "type": "shell",
+        "command": "docker compose up",
+        "problemMatcher": [],
+      },
+      {
+        "label": "docker: down",
+        "type": "shell",
+        "command": "docker compose down",
+        "problemMatcher": [],
+      },
+
+      {
+        "label": "prisma: generate",
+        "type": "shell",
+        "command": "npx prisma generate",
+        "problemMatcher": [],
+      },
+      {
+        "label": "prisma: migrate dev",
+        "type": "shell",
+        "command": "npx prisma migrate dev",
+        "problemMatcher": [],
+      },
+      {
+        "label": "prisma: studio",
+        "type": "shell",
+        "command": "npx prisma studio",
+        "problemMatcher": [],
+      },
+    ],
+  },
+
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "NestJS: debug (start:dev)",
+        "type": "node",
+        "request": "launch",
+        "runtimeExecutable": "npm",
+        "runtimeArgs": ["run", "start:dev"],
+        "console": "integratedTerminal",
+        "skipFiles": ["<node_internals>/**"],
+      },
+    ],
+  },
+
+  "extensions": {
+    "recommendations": [
+      "dbaeumer.vscode-eslint",
+      "esbenp.prettier-vscode",
+      "prisma.prisma",
+      "ms-azuretools.vscode-docker",
+      "redhat.vscode-yaml",
+      "mikestead.dotenv",
+    ],
+  },
+}

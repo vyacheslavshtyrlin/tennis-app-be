@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  matches   Match[]
+}
+
+model Match {
+  id               Int          @id @default(autoincrement())
+  user             User         @relation(fields: [userId], references: [id])
+  userId           Int
+
+  title            String?
+  player1Name      String?
+  player2Name      String?
+  eventDate        DateTime?
+  location         String?
+  description      String?
+
+  originalVideoUrl  String
+  status            MatchStatus  @default(UPLOADED)
+
+  tracking         Json?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+}
+
+enum MatchStatus {
+  UPLOADED
+  TRANSCODING
+  READY
+  ANALYZING
+  DONE
+  ERROR
+}
