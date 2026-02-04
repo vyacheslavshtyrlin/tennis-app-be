@@ -32,6 +32,14 @@ jobs:
             git fetch --all
             git reset --hard origin/main
             git clean -fd -e .env.prod
+
+            echo "Repo path:" $(pwd)
+            echo "Current HEAD:" $(git rev-parse HEAD)
+            git status -sb
+            docker compose -f docker-compose.prod.yml --env-file .env.prod ps
+            docker images --format "table {{.Repository}}\t{{.Tag}}\t{{.ID}}\t{{.CreatedAt}}" | head -20
+            docker ps --filter name=tennis-backend --format "table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.CreatedAt}}"
+
             echo "Current HEAD:" $(git rev-parse HEAD)
             if [ "$(git rev-parse HEAD)" != "${{ github.sha }}" ]; then
               echo "ERROR: Deploy commit mismatch. Expected ${{ github.sha }}"
