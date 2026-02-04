@@ -42,7 +42,9 @@ jobs:
             echo "Current HEAD:" $(git rev-parse HEAD)
             git status -sb
             docker compose -f docker-compose.prod.yml --env-file .env.prod ps
-            docker images --format "table {{.Repository}}\t{{.Tag}}\t{{.ID}}\t{{.CreatedAt}}" | head -20
+            set +o pipefail
+            docker images --format "table {{.Repository}}\t{{.Tag}}\t{{.ID}}\t{{.CreatedAt}}" | head -20 || true
+            set -o pipefail
             docker ps --filter name=tennis-backend --format "table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.CreatedAt}}"
 
             echo "Current HEAD:" $(git rev-parse HEAD)
