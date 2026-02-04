@@ -9,13 +9,14 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from '@nestjs/passport';
 
 import { CurrentUser } from '../common/decorators/user.decorator';
 
 import { CreateMatchDto } from './dto/create-match.dto';
+import { MatchDetailDto, MatchListItemDto } from './dto/match.dto';
 import { MatchesService } from './matches.service';
 
 @ApiTags('matches')
@@ -26,11 +27,13 @@ export class MatchesController {
   constructor(private readonly matchesService: MatchesService) {}
 
   @Get()
+  @ApiOkResponse({ type: MatchListItemDto, isArray: true })
   list(@CurrentUser() user: { userId: number }) {
     return this.matchesService.listMatches(user.userId);
   }
 
   @Get(':id')
+  @ApiOkResponse({ type: MatchDetailDto })
   getOne(@CurrentUser() user: { userId: number }, @Param('id', ParseIntPipe) id: number) {
     return this.matchesService.getMatch(user.userId, id);
   }
