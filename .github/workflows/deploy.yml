@@ -21,12 +21,22 @@ jobs:
           username: ${{ secrets.VM_SSH_USER }}
           key: ${{ secrets.VM_SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
+          script_stop: true
           script: |
             set -euo pipefail
+            echo "Host:" $(hostname)
+            echo "User:" $(whoami)
             cd /home/deploy/tennis-app-be
+            test -d .git
+            git remote -v
             git fetch --all
             git reset --hard origin/main
             git clean -fd -e .env.prod
+            echo "Current HEAD:" $(git rev-parse HEAD)
+            if [ "$(git rev-parse HEAD)" != "${{ github.sha }}" ]; then
+              echo "ERROR: Deploy commit mismatch. Expected ${{ github.sha }}"
+              exit 1
+            fi
             docker compose -f docker-compose.prod.yml --env-file .env.prod build --no-cache
             if [ "${{ github.event.inputs.run_migrations || 'true' }}" = "true" ]; then
               docker compose -f docker-compose.prod.yml --env-file .env.prod run --rm migrate
