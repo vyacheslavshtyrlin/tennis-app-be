@@ -9,7 +9,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -36,6 +36,21 @@ export class MatchesController {
   }
 
   @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        title: { type: 'string', nullable: true },
+        player1Name: { type: 'string', nullable: true },
+        player2Name: { type: 'string', nullable: true },
+        eventDate: { type: 'string', format: 'date-time', nullable: true },
+        location: { type: 'string', nullable: true },
+        description: { type: 'string', nullable: true },
+        file: { type: 'string', format: 'binary' },
+      },
+      required: ['file'],
+    },
+  })
   @UseInterceptors(FileInterceptor('file'))
   @Post()
   create(
