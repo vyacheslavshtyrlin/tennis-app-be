@@ -24,16 +24,19 @@ jobs:
           script_stop: true
           script: |
             set -euo pipefail
+            set -x
+            echo "=== DEPLOY START ==="
             echo "Host:" $(hostname)
             echo "User:" $(whoami)
             cd /home/deploy/tennis-app-be
+            echo "Repo path:" $(pwd)
+            ls -la
             test -d .git
             git remote -v
             git fetch --all
             git reset --hard origin/main
             git clean -fd -e .env.prod
 
-            echo "Repo path:" $(pwd)
             echo "Current HEAD:" $(git rev-parse HEAD)
             git status -sb
             docker compose -f docker-compose.prod.yml --env-file .env.prod ps
