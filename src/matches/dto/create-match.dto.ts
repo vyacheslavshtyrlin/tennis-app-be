@@ -1,31 +1,4 @@
-import { IsArray, IsDateString, IsNumber, IsObject, IsOptional, IsString, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
-
-class TrackingBallDto {
-  @IsNumber()
-  x!: number;
-
-  @IsNumber()
-  y!: number;
-}
-
-class TrackingTimelineEntryDto {
-  @IsNumber()
-  t!: number;
-
-  @IsObject()
-  @ValidateNested()
-  @Type(() => TrackingBallDto)
-  b!: TrackingBallDto;
-}
-
-class TrackingCourtDto {
-  @IsNumber()
-  width!: number;
-
-  @IsNumber()
-  height!: number;
-}
+import { IsDateString, IsOptional, IsString } from 'class-validator';
 
 export class CreateMatchDto {
   @IsOptional()
@@ -51,16 +24,4 @@ export class CreateMatchDto {
   @IsOptional()
   @IsString()
   description?: string;
-
-  @IsOptional()
-  @IsObject()
-  @ValidateNested()
-  @Type(() => TrackingCourtDto)
-  court?: TrackingCourtDto;
-
-  @IsOptional()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => TrackingTimelineEntryDto)
-  timeline?: TrackingTimelineEntryDto[];
 }
