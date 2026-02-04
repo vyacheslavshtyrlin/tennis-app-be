@@ -24,7 +24,9 @@ jobs:
           script: |
             set -euo pipefail
             cd /home/deploy/tennis-app-be
-            git pull --ff-only
+            git fetch --all
+            git reset --hard origin/main
+            git clean -fd -e .env.prod
             docker compose -f docker-compose.prod.yml --env-file .env.prod build --no-cache
             if [ "${{ github.event.inputs.run_migrations || 'true' }}" = "true" ]; then
               docker compose -f docker-compose.prod.yml --env-file .env.prod run --rm migrate
